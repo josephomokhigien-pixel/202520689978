@@ -1,0 +1,15 @@
+# Ignore build output
+*.exe
+*.dll
+*.o
+*.obj
+*.so
+
+# Ignore IDE/project files
+*.class
+*.com
+build/
+*.user
+*.suo
+*.vcxproj*
+*.log
