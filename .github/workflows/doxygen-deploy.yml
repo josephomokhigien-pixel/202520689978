@@ -17,11 +17,11 @@ jobs:
         run: sudo apt-get update && sudo apt-get install -y doxygen
 
       - name: Run Doxygen
-        working-directory: ${{ github.workspace }}
+        working-directory: ${{ github.workspace }}/Worksheet5
         run: doxygen Doxyfile
 
       - name: Deploy to GitHub Pages
         uses: JamesIves/github-pages-deploy-action@v4
         with:
           branch: gh-pages
-          folder: ${{ github.workspace }}/html
+          folder: ${{ github.workspace }}/Worksheet5/html
