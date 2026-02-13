@@ -1,10 +1,27 @@
-# Ignore Doxygen output folders
+# Ignore Doxygen output
 html/
 latex/
 
-# Ignore build artifacts (optional, if you have them)
+# Ignore temporary backup files
+*.bak
+*~
+*.swp
+
+# Ignore build artifacts
 *.o
 *.obj
 *.exe
 *.dll
-Doxyfile.bak 
+*.lib
+
+# Ignore IDE/editor folders
+.vscode/
+*.code-workspace
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# Ignore system files
+Thumbs.db
+desktop.ini
+
