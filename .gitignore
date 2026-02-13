@@ -7,3 +7,4 @@ latex/
 *.obj
 *.exe
 *.dll
+Doxyfile.bak 
