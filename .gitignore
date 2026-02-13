@@ -1,0 +1,11 @@
+# Ignore Doxygen output
+Worksheet5/html/
+Worksheet5/latex/
+
+# Ignore build folders
+build/
+*.o
+*.obj
+*.exe
+*.dll
+*.log

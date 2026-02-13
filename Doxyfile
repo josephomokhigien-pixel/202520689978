@@ -1,0 +1,8 @@
+# Doxyfile 1.9.8
+PROJECT_NAME           = "Worksheet5"
+OUTPUT_DIRECTORY       = .
+INPUT                  = ./src
+RECURSIVE              = YES
+GENERATE_HTML          = YES
+GENERATE_LATEX         = YES
+HTML_OUTPUT            = html
