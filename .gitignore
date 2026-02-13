@@ -1,0 +1,9 @@
+# Ignore Doxygen output folders
+html/
+latex/
+
+# Ignore build artifacts (optional, if you have them)
+*.o
+*.obj
+*.exe
+*.dll
