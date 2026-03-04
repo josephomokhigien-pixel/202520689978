@@ -130,14 +130,34 @@ void MainWindow::on_actionopen_file_triggered()
     // 1) Choose a file
     QString filePath = QFileDialog::getOpenFileName(
         this,
-        "Open text file",
+        "Open STL file",
         QString(),
-        "Text Files (*.txt);;All Files (*.*)"
+        "STL Files (*.STL);;All Files (*.*)"
         );
 
     if (filePath.isEmpty())
         return;
 
+    // 2) Get file name (for tree label)
+    QFileInfo info(filePath);
+    QString name = info.fileName();
+
+    QString visible("true");
+
+    // 3) CREATE a new ModelPart object
+    ModelPart* newItem = new ModelPart({name, visible});
+
+    // 4) Load the STL into the ModelPart
+    newItem->loadSTL(filePath);
+
+    // 5) Add it to the tree (under the root)
+    ModelPart* rootItem = partList->getRootItem();
+    rootItem->appendChild(newItem);
+
+    // 6) Update renderer
+    updateRender();
+
+    emit statusUpdateMessage("Loaded STL: " + name, 0);
     // 2) Get selected item in the tree
     QModelIndex index = ui->treeView->currentIndex();
     if (!index.isValid()) {
@@ -149,7 +169,7 @@ void MainWindow::on_actionopen_file_triggered()
     if (!item) return;
 
     // 3) Set item name to the file name (choose one of these)
-    QFileInfo info(filePath);
+
 
     QString newLabel = info.fileName();      // e.g. hello.txt
     // QString newLabel = info.baseName();   // e.g. hello (no .txt)
@@ -219,4 +239,42 @@ bool MainWindow::eventFilter(QObject *obj, QEvent *event)
         }
     }
     return QMainWindow::eventFilter(obj, event);
+}
+void MainWindow::updateRender()
+{
+    if (!renderer || !renderWindow) return;
+
+    // 1) Clear everything currently shown
+    renderer->RemoveAllViewProps();
+
+    // 2) Walk the tree and add visible actors
+    ModelPart* root = partList->getRootItem();
+    updateRenderFromTree(root);
+
+    // 3) Reset camera and draw
+    renderer->ResetCamera();
+    renderWindow->Render();
+}
+void MainWindow::updateRenderFromTree(ModelPart* item)
+{
+    if (!item) return;
+
+    // If THIS item is visible and has an actor, add it
+    if (item->visible())
+    {
+        vtkActor* actor = item->getActor();   // we'll make sure this exists in ModelPart
+        if (actor)
+            renderer->AddActor(actor);
+    }
+
+    // Walk children using a while loop
+    int row = 0;
+    ModelPart* child = item->child(row);
+
+    while (child != nullptr)
+    {
+        updateRenderFromTree(child);
+        row++;
+        child = item->child(row);
+    }
 }

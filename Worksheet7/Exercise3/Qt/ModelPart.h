@@ -13,6 +13,7 @@
 #include <QString>
 #include <QList>
 #include <QVariant>
+#include <vtkSmartPointer.h>
 
 /* VTK headers - will be needed when VTK used in next worksheet,
  * commented out for now
@@ -27,7 +28,13 @@
 //#include <vtkSTLReader.h>
 //#include <vtkColor.h>
 
-class ModelPart {
+// Forward declare VTK classes (so we don't need to include heavy headers here)
+class vtkMapper;
+class vtkActor;
+class vtkSTLReader;
+
+class ModelPart
+{
 public:
     /** Constructor
      * @param data is a List (array) of strings for each property of this item (part name and visiblity in our case
@@ -54,11 +61,7 @@ public:
     /** Return number of children to this item
       * @return number of children
       */
-    int childCount() const;         /* Note on the 'const' keyword - it means that this function is valid for
-                                     * constant instances of this class. If a class is declared 'const' then it
-                                     * cannot be modifed, this means that 'set' type functions are usually not
-                                     * valid, but 'get' type functions are.
-                                     */
+    int childCount() const;
 
     /** Get number of data items (2 - part name and visibility string) in this case.
       * @return number of visible data columns
@@ -73,13 +76,12 @@ public:
       */
     QVariant data(int column) const;
 
-
     /** Default function required by Qt to allow setting of part
       * properties within treeview.
       * @param column is the index of the property to set
       * @param value is the value to apply
       */
-    void set( int column, const QVariant& value );
+    void set(int column, const QVariant& value);
 
     /** Get pointer to parent item
       * @return pointer to parent item
@@ -90,7 +92,6 @@ public:
       * @return row index
       */
     int row() const;
-
 
     /** Set colour
       * (0-255 RGB values as ints)
@@ -111,11 +112,11 @@ public:
     void setVisible(bool isVisible);
 
     /** Get visible flag
-      * @return visible flag as boolean 
+      * @return visible flag as boolean
       */
     bool visible();
-	
-	/** Load STL file
+
+    /** Load STL file
       * @param fileName
       */
     void loadSTL(QString fileName);
@@ -123,7 +124,7 @@ public:
     /** Return actor
       * @return pointer to default actor for GUI rendering
       */
-    //vtkSmartPointer<vtkActor> getActor();
+    vtkActor* getActor();
 
     /** Return new actor for use in VR
       * @return pointer to new actor
@@ -139,16 +140,14 @@ private:
      * want to add you own.
      */
     bool                                        isVisible;          /**< True/false to indicate if should be visible in model rendering */
-	
-	/* These are vtk properties that will be used to load/render a model of this part,
-	 * commented out for now but will be used later
-	 */
-	//vtkSmartPointer<vtkSTLReader>               file;               /**< Datafile from which part loaded */
-    //vtkSmartPointer<vtkMapper>                  mapper;             /**< Mapper for rendering */
-    //vtkSmartPointer<vtkActor>                   actor;              /**< Actor for rendering */
-    //vtkColor3<unsigned char>                    colour;             /**< User defineable colour */
-};  
 
+    /* These are vtk properties that will be used to load/render a model of this part,
+     * previously commented out — now we enable them for Exercise 4.
+     */
+    vtkSmartPointer<vtkSTLReader>               file;               /**< Datafile from which part loaded */
+    vtkSmartPointer<vtkMapper>                  mapper;             /**< Mapper for rendering */
+    vtkSmartPointer<vtkActor>                   actor;              /**< Actor for rendering */
+    //vtkColor3<unsigned char>                  colour;             /**< User defineable colour */
+};
 
 #endif
-

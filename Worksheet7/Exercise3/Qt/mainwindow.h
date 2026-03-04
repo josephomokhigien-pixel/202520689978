@@ -28,6 +28,8 @@ public slots:
     void handleButton1();
     void handleButton2();
     void handleTreeClicked();
+    void updateRender();
+    void updateRenderFromTree(ModelPart* item);
 
 private slots:
     void on_actionopen_file_triggered();
