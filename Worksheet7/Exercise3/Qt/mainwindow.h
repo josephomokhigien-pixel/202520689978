@@ -3,12 +3,16 @@
 
 #include <QMainWindow>
 #include "ModelPartList.h"
+#include <vtkSmartPointer.h>
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
 class MainWindow;
 }
 QT_END_NAMESPACE
+
+class vtkRenderer;
+class vtkGenericOpenGLRenderWindow;
 
 class MainWindow : public QMainWindow
 {
@@ -35,5 +39,8 @@ protected:
 private:
     Ui::MainWindow *ui;
      ModelPartList* partList;
+
+    vtkSmartPointer<vtkRenderer> renderer;
+    vtkSmartPointer<vtkGenericOpenGLRenderWindow> renderWindow;
 };
 #endif // MAINWINDOW_H
